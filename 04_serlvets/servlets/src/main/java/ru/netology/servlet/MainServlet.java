@@ -20,18 +20,17 @@ public class MainServlet extends HttpServlet {
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp) {
-    // если деплоились в root context, то достаточно этого
+
     try {
       final var path = req.getRequestURI();
       final var method = req.getMethod();
-      // primitive routing
+
       if (method.equals("GET") && path.equals("/api/posts")) {
         controller.all(resp);
         return;
       }
       if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
-        // easy way
-        final var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
+        Long id = Long.parseLong(path.replaceAll("[^0-9]", ""));
         controller.getById(id, resp);
         return;
       }
@@ -40,8 +39,7 @@ public class MainServlet extends HttpServlet {
         return;
       }
       if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
-        // easy way
-        final var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
+        Long id = Long.parseLong(path.replaceAll("[^0-9]", ""));
         controller.removeById(id, resp);
         return;
       }

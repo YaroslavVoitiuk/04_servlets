@@ -1,25 +1,49 @@
 package ru.netology.repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
-// Stub
 public class PostRepository {
+
+  private Map<Long,Post> posts = new HashMap<>();
+  long id;
+
+  public PostRepository(){
+    posts.put(1L,new Post(1,"First Post"));
+    posts.put(2L,new Post(2,"Second Post"));
+    this.id = posts.size();
+  }
+
   public List<Post> all() {
-    return Collections.emptyList();
+    return new ArrayList<>(posts.values());
   }
 
   public Optional<Post> getById(long id) {
-    return Optional.empty();
+    return Optional.ofNullable(posts.get(id));
+
   }
 
-  public Post save(Post post) {
+  public synchronized Post save(Post post) {
+    if (post.getId() == 0 && !posts.containsKey(post.getId())) {
+      //long id = posts.size();
+      Post newPost = new Post(++id, post.getContent());
+      posts.put(id, newPost);
+    } else if (post.getId() != 0 && posts.containsKey(post.getId())) {
+      posts.put(post.getId(), post);
+    } else {
+      throw new NotFoundException("no such posts found");
+    }
     return post;
   }
 
-  public void removeById(long id) {
+  public synchronized void removeById(long id) {
+    posts.remove(id);
   }
 }
