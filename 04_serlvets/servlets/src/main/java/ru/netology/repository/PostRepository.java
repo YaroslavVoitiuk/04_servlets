@@ -1,16 +1,16 @@
 package ru.netology.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Repository;
 import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 
-
+@Repository
 public class PostRepository {
 
   private Map<Long,Post> posts = new ConcurrentHashMap<>();
@@ -19,9 +19,7 @@ public class PostRepository {
   public PostRepository(){
     posts.put(1L,new Post(1,"First Post"));
     posts.put(2L,new Post(2,"Second Post"));
-   // id.compareAndSet(id, posts.size());
     id.set(posts.size());
-    //this.id = posts.size();
   }
 
   public List<Post> all() {
@@ -35,7 +33,6 @@ public class PostRepository {
 
   public Post save(Post post) {
     if (post.getId() == 0 && !posts.containsKey(post.getId())) {
-      //long id = posts.size();
       Post newPost = new Post(id.incrementAndGet(), post.getContent());
       posts.put(id.get(), newPost);
     } else if (post.getId() != 0 && posts.containsKey(post.getId())) {
