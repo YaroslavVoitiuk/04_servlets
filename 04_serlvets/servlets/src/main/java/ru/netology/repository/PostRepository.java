@@ -19,9 +19,7 @@ public class PostRepository {
   public PostRepository(){
     posts.put(1L,new Post(1,"First Post"));
     posts.put(2L,new Post(2,"Second Post"));
-   // id.compareAndSet(id, posts.size());
     id.set(posts.size());
-    //this.id = posts.size();
   }
 
   public List<Post> all() {
@@ -35,7 +33,6 @@ public class PostRepository {
 
   public Post save(Post post) {
     if (post.getId() == 0 && !posts.containsKey(post.getId())) {
-      //long id = posts.size();
       Post newPost = new Post(id.incrementAndGet(), post.getContent());
       posts.put(id.get(), newPost);
     } else if (post.getId() != 0 && posts.containsKey(post.getId())) {
@@ -46,7 +43,10 @@ public class PostRepository {
     return post;
   }
 
-  public void removeById(long id) {
-    posts.remove(id);
+  public void removeById(long postId) {
+    if(posts.containsKey(postId)){
+      posts.remove(postId);
+      id.set(posts.size());
+    }else throw new NotFoundException();
   }
 }
