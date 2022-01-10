@@ -1,16 +1,16 @@
 package ru.netology.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Repository;
 import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 
-
+@Repository
 public class PostRepository {
 
   private Map<Long,Post> posts = new ConcurrentHashMap<>();
