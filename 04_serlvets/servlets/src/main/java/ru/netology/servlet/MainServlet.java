@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
-  private PostRepository repository;
-  private PostService service;
   private PostController controller;
 
 
@@ -20,8 +18,6 @@ public class MainServlet extends HttpServlet {
   public void init() {
     AnnotationConfigApplicationContext context =
         new AnnotationConfigApplicationContext(SpringConfig.class);
-    repository = context.getBean(PostRepository.class);
-    service = context.getBean(PostService.class);
     controller = context.getBean(PostController.class);
   }
 
