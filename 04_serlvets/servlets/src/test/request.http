@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "content": "New Possst"
+  "content": "New Posst"
 }
 
 ### delete by id

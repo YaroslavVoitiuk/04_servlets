@@ -1,7 +1,6 @@
 package ru.netology.repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class PostRepository {
   }
 
   public Post save(Post post) {
-    if (post.getId() == 0 && !posts.containsKey(post.getId())) {
+    if (post.getId() == 0) {
       Post newPost = new Post(id.incrementAndGet(), post.getContent());
       posts.put(id.get(), newPost);
     } else if (post.getId() != 0 && posts.containsKey(post.getId())) {
@@ -46,7 +45,6 @@ public class PostRepository {
   public void removeById(long postId) {
     if(posts.containsKey(postId)){
       posts.remove(postId);
-      id.set(posts.size());
     }else throw new NotFoundException();
   }
 }
